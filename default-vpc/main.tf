@@ -4,7 +4,7 @@ resource "aws_default_vpc" "default" {
     }
 }
 
-resource "aws_default_subnet" "public_0" {
+resource "aws_default_subnet" "public" {
   for_each = toset(var.public_azs)
     availability_zone = each.key
     tags = {
@@ -13,7 +13,7 @@ resource "aws_default_subnet" "public_0" {
     
 }
 
-resource "aws_default_subnet" "private_0" {
+resource "aws_default_subnet" "private" {
     for_each = toset(var.private_azs)
     availability_zone = each.key
     tags = {
@@ -31,12 +31,7 @@ resource "aws_default_route_table" "default" {
 resource "aws_default_network_acl" "default" {
   default_network_acl_id = aws_default_vpc.default.default_network_acl_id
 
-  subnet_ids = [
-    aws_default_subnet.public_0.id,
-    aws_default_subnet.public_1.id,
-    aws_default_subnet.private_0.id,
-    aws_default_subnet.private_1.id
-  ]
+  subnet_ids = join(aws_default_subnet.private.id[*],aws_default_subnet.public.id[*])
 
   ingress {
     protocol   = -1
