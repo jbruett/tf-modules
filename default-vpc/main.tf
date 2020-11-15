@@ -1,5 +1,5 @@
 resource "aws_default_vpc" "default" {
-    tags {
+    tags = {
       Name = "default"
     }
 }
@@ -7,7 +7,7 @@ resource "aws_default_vpc" "default" {
 resource "aws_default_subnet" "public_0" {
   for_each = toset(var.public_azs)
     availability_zone = each.key
-    tags {
+    tags = {
       Name = "default-public-${substr(each.key,length(each.key)-2,2)}"
     }
     
@@ -16,14 +16,14 @@ resource "aws_default_subnet" "public_0" {
 resource "aws_default_subnet" "private_0" {
     for_each = toset(var.private_azs)
     availability_zone = each.key
-    tags {
+    tags = {
       Name = "default-public-${substr(each.key,length(each.key)-2,2)}"
     }
 }
 
 resource "aws_default_route_table" "default" {
     default_route_table_id = aws_default_vpc.default.default_route_table_id
-    tags {
+    tags = {
       Name = "default"
     }
 }
@@ -55,7 +55,7 @@ resource "aws_default_network_acl" "default" {
     from_port  = 0
     to_port    = 0
   }
-  tags {
+  tags = {
     Name = "default"
   }
 }
@@ -77,13 +77,13 @@ resource "aws_default_security_group" "default" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name = "default"
   }
 }
 
 resource "aws_default_vpc_dhcp_options" "default" {
-  tags {
+  tags = {
     Name = "default"
   }
 }
