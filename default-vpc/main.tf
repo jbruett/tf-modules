@@ -31,7 +31,7 @@ resource "aws_default_route_table" "default" {
 resource "aws_default_network_acl" "default" {
   default_network_acl_id = aws_default_vpc.default.default_network_acl_id
 
-  subnet_ids = join(aws_default_subnet.private[*].id,aws_default_subnet.public[*].id)
+  subnet_ids = toset(aws_default_subnet.private[*].id,aws_default_subnet.public[*].id)
 
   ingress {
     protocol   = -1
