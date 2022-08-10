@@ -31,11 +31,9 @@ resource "aws_default_route_table" "default" {
 resource "aws_default_network_acl" "default" {
   default_network_acl_id = aws_default_vpc.default.default_network_acl_id
   # module.default_vpc.public_subnet[0]["us-east-1a"].id
-  subnet_ids = [
-    aws_default_subnet.private_subnet_0.id,
-    aws_default_subnet.private_subnet_1.id,
-    aws_default_subnet.public_subnet_0.id,
-    aws_default_subnet.public_subnet_1.id
+  subnet_ids = [concat(
+    aws_default_subnet.private_subnet[*].id,
+    aws_default_subnet.public_subnet[*].id)
   ]
 
   ingress {
