@@ -17,7 +17,7 @@ resource "aws_default_subnet" "private" {
     for_each = toset(var.private_azs)
     availability_zone = each.key
     tags = {
-      Name = "default-public-${substr(each.key,length(each.key)-2,2)}"
+      Name = "default-private-${substr(each.key,length(each.key)-2,2)}"
     }
 }
 
